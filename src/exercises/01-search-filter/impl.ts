@@ -28,5 +28,36 @@ export const emptyFilters: SearchFilters = {
  * - не мутуй вхідний масив.
  */
 export function applyFilters(products: Product[], filters: SearchFilters): Product[] {
+  const query = filters.query.trim().toLowerCase();
 
+  return products.filter((product) => {
+    const searchableFields = [
+      product.title,
+      product.category,
+      product.brand,
+      ...(product.tags ?? []),
+    ];
+
+    const matchesQuery =
+      !query || searchableFields.some((value) => value?.toLowerCase().includes(query));
+
+    const matchesCategory = !filters.category || product.category === filters.category;
+
+    const matchesMinPrice =
+      filters.minPrice === null || product.price >= filters.minPrice;
+
+    const matchesMaxPrice =
+      filters.maxPrice === null || product.price <= filters.maxPrice;
+
+    const matchesMinRating =
+      filters.minRating === 0 || product.rating >= filters.minRating;
+
+    return (
+      matchesQuery &&
+      matchesCategory &&
+      matchesMinPrice &&
+      matchesMaxPrice &&
+      matchesMinRating
+    );
+  });
 }
