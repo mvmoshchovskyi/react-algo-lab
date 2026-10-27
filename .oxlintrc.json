@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "import"],
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "react/jsx-key": "error",
+    "react/refs": "off",
+    "react/set-state-in-effect": "off",
+    "import/default": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules", "public/test-results.json"]
+}
