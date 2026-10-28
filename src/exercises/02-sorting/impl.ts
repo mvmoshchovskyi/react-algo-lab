@@ -12,8 +12,9 @@ export type SortState = { key: SortKey; direction: SortDirection } | null;
  */
 export function nextSortState(current: SortState, key: SortKey): SortState {
   // TODO: реалізуй цикл сортування
-  void current;
-  void key;
+  if (!current || current.key !== key) return { key, direction: "asc" };
+  if (current.direction === "asc") return { key, direction: "desc" };
+
   return null;
 }
 
@@ -30,5 +31,21 @@ export function nextSortState(current: SortState, key: SortKey): SortState {
  */
 export function sortRows(rows: Product[], _sort: SortState): Product[] {
   // TODO: реалізуй сортування
-  return [...rows];
+  const result = [...rows];
+
+
+
+  if (_sort === null) {
+    return result;
+  }
+
+  const { key, direction } = _sort;
+
+  const multiplier = direction === 'asc' ? 1 : -1;
+
+  return result.sort((a, b) => {
+    const comparison = key === "title" ? a.title.localeCompare(b.title) : a[key] - b[key];
+
+    return comparison === 0 ? a.id - b.id : comparison * multiplier;
+  });
 }
